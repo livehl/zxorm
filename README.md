@@ -4,7 +4,7 @@
 初始化数据库连接
 
 	DBEntity.setDataSource("com.mysql.jdbc.Driver","root","","jdbc:mysql://127.0.0.1:3306/db")
-或者
+	或者
 	val ds = new BasicDataSource()
     ds.setDriverClassName(clazz);
     ds.setUsername(userName);
@@ -15,11 +15,12 @@
 
 
 关联类
-	继承并传入表名
 
-class User(val id:Int,val name:String,var age:Int) extends DBEntity("Users")
+	继承并传入表名
+		class User(val id:Int,val name:String,var age:Int) extends DBEntity("Users")
 
 使用
+
 	查询
 		DBEntity.queryOne(classOf[User],"select * from User where name=? ",name)
 		DBEntity.query(classOf[User], "select * from Users)")
