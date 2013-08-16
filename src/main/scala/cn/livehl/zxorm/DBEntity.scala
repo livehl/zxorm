@@ -3,7 +3,7 @@ package cn.livehl.zxorm
 import java.sql.{ SQLException, Statement }
 import java.util.Date
 
-import collection.JavaConversions.{ asScalaBuffer, mapAsScalaMap }
+import collection.JavaConversions._
 
 import org.apache.commons.dbcp.BasicDataSource
 import org.apache.commons.dbutils.QueryRunner
@@ -200,12 +200,12 @@ private object DBTool {
     conn.close()
     resultcount
   }
-  def queryDataMap(sql: String, params: Any*) = {
+  def queryDataMap(sql: String, params: AnyRef*) = {
     val conn = dataSource.getConnection()
     val rsh = new MapListHandler()
     val run = new QueryRunner()
     try {
-      val results = run.query(conn, sql, rsh, params)
+      val results = run.query(conn, sql, rsh, params:_*)
       conn.close()
       results
     } catch {
