@@ -166,18 +166,16 @@ private object DBTool {
         st.setString(i + 1, params(i).toString())
       }
     }
-    var insertId = 0
     try {
       st.executeUpdate()
       val rs = st.getGeneratedKeys()
-      insertId = if (rs.next()) rs.getInt(1) else -1
+      if (rs.next()) rs.getInt(1) else -1
     } catch {
       case e: SQLException => throw new DetailSQLException(e, sql)
     } finally {
       st.close()
+      conn.close()
     }
-    conn.close()
-    insertId
   }
   def update(sql: String, params: Any*) = {
     val conn = dataSource.getConnection()
@@ -187,27 +185,23 @@ private object DBTool {
         st.setString(i + 1, params(i).toString())
       }
     }
-    var resultcount = 0
     try {
       if (st.execute()) {
-        resultcount = st.getUpdateCount()
+        st.getUpdateCount()
+      } else {
+        0
       }
     } catch {
       case e: SQLException => throw new DetailSQLException(e, sql)
     } finally {
       st.close()
+      conn.close()
     }
-    conn.close()
-    resultcount
   }
   def queryDataMap(sql: String, params: AnyRef*) = {
     val conn = dataSource.getConnection()
-    val rsh = new MapListHandler()
-    val run = new QueryRunner()
     try {
-      val results = run.query(conn, sql, rsh, params:_*)
-      conn.close()
-      results
+      new QueryRunner().query(conn, sql, new MapListHandler(), params: _*)
     } catch {
       case e: SQLException => throw new DetailSQLException(e, sql)
     } finally {

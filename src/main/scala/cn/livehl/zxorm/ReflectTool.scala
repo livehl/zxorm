@@ -134,14 +134,4 @@ object ReflectTool {
       javaConstructors(i) -> (0 until ccon.getParameterTypes().length map { i => attr.variableName(i + pos) -> parameterTypes(i) } toList)
     } toList
   }
-
-  def main(args: Array[String]) {
-    val cp = getConstructorParamNames(classOf[TestObject]).maxBy(_._2.length)._2 map (_._1)
-    //	    val en=DBEntity[TestObject](classOf[TestObject],Map("name"->"miao","age"-> Int.box(16)))
-    //	    println(en)
-    println(cp)
-    System.exit(0)
-  }
 }
-
-class TestObject(val name: String, val age: Int)
