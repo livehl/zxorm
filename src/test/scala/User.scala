@@ -1,6 +1,7 @@
 import java.sql.Timestamp
-import cn.livehl.zxorm.DBEntity
+import java.sql.Date
+import cn.livehl.zxorm.{BaseDBEntity}
 
-class User(val id:Int,val username:String,var nickname:String,val email:String) extends DBEntity("User")
 
-case class CaseUser(id:Int,username:String,nickname:String,email:String)extends DBEntity("User")
+
+class User(val id:Int= -1,val username:String="",var nickname:String="",val email:String="", val createDate: Date=new Date(System.currentTimeMillis())) extends BaseDBEntity[User]("User")
