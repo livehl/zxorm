@@ -26,6 +26,8 @@ object Example {
     //查询
     val user=new User().query("username=? ","livehl")
     println(user.size)
+
+
     //分页查询
     val users=new User().queryPage("",1,10,"")
     println(users)

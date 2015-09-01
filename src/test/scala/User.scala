@@ -4,4 +4,4 @@ import cn.livehl.zxorm.{BaseDBEntity}
 
 
 
-class User(val id:Int= -1,val username:String="",var nickname:String="",val email:String="", val createDate: Date=new Date(System.currentTimeMillis())) extends BaseDBEntity[User]("User")
+class User(val id:Int= -1,val username:String="",val nickname:String="",val email:String="", val createDate: Date=new Date(System.currentTimeMillis())) extends BaseDBEntity[User]("User")
