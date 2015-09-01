@@ -31,7 +31,7 @@
     表处理
 
         创建
-            new User().createTable(false)
+            new User().createTable
         清空
             new User().cleanTable
         删除
@@ -39,14 +39,14 @@
 
 	查询
 		val user=new User().query("username=? ","livehl")
-		val users=new User().queryPage("",1,10,"")
+		val (allCount,users)=new User().queryPage("",1,10,"")
 		new User().queryAll()
 		new User().queryByIds(1::2::3::Nil)
 
 	增加
 		new User(0,"tom",12).insert // id=1,name=tom,age=12
 		new User(0,"tomcat",18).insert("name") //id=2,name=tomcat,age=null
-		new User(2,"tomcat",18).insertUpdate("age") //id=2,name=tomcat,age=18  特别注意，插入默认情况下id是会被忽略的，请修改 !!DBEntity:34行
+		new User(2,"tomcat",28).insertUpdate("age") //id=2,name=tomcat,age=28
 	    new User(10,"tom",12).insertWithId // id=10,name=tom,age=12
 	修改
 		new User(2,"dog",22).update("id","name")//id=2,name=dog,age=18
@@ -54,6 +54,17 @@
 		new User(2,"tomcat",30).updateNoEmptyById//id=2,name=tomcat,age=30
 	删除
 		new User(2,"dog",22).delete("id")
-		
+
+    事务
+        DBEntity.transaction{
+            val u1=new User(0,"livehl","子轩","livehl@126.com").insert()
+            val u2=new User(0,"livehl1","子轩1","livehl@123.com").insert()
+          //一大啪啦涉及事务的处理过程
+          //  特别注意  阿里巴巴的DRDS分库分表的数据库要求执行事务的操作必须在同一台机器上
+          //不用看了,下面不需要处理什么东西,只要在方法域内都是事务范围,执行完毕后自动提交
+        }{ex=>
+          //事务执行出错了,会自动回滚,这里不用操心,只做逻辑处理
+          println(ex.getMessage)
+        }
 		
 		
